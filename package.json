@@ -1,0 +1,22 @@
+{
+  "name": "employee-tracker-12",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "test": "jest"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Darobinson20/employee-tracker-12.git"
+  },
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/Darobinson20/employee-tracker-12/issues"
+  },
+  "homepage": "https://github.com/Darobinson20/employee-tracker-12#readme",
+  "dependencies": {
+    "mysql2": "^2.3.3"
+  }
+}
