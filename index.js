@@ -1,6 +1,7 @@
 // Packages needed
 const mysql = require('mysql2');
 const inquirer = require('inquirer');
+const cTable = require('console.table');
 
 
 // Connect to database
