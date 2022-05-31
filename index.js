@@ -57,12 +57,13 @@ const connection = mysql.createConnection(
 
 function viewAllEmployees() {
   var query = 'SELECT * FROM employee';
-  connection.query(query), function(err, res) {
+  connection.query(query, (err, res) => {
     if (err) throw err;
+    
     console.log(res.length + 'employees');
     console.table(' View All Employees', res);
     promptUser();
-  }
+  })
 }
 
 
