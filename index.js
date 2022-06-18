@@ -6,7 +6,7 @@ const cTable = require('console.table');
 
 
 // Create connection to database
-const connection = mysql.createConnection(
+const db = mysql.createConnection(
     {
       host: 'localhost',
       user: 'root',
@@ -16,7 +16,7 @@ const connection = mysql.createConnection(
     console.log(`Connected to the employee_db database.`)
   );
 
-  connection.connect(function(err){
+  db.connect(function(err){
     if (err) throw err;
 
   })
@@ -57,7 +57,7 @@ const connection = mysql.createConnection(
 
 function viewAllEmployees() {
   var query = 'SELECT * FROM employee';
-  connection.query(query, (err, res) => {
+  db.query(query, (err, res) => {
     if (err) throw err;
 
     console.log(res.length + 'employees');
@@ -68,7 +68,7 @@ function viewAllEmployees() {
 
 function viewAllRoles() {
   var query = 'SELECT * FROM roles';
-  connection.query(query, (err, res) => {
+  db.query(query, (err, res) => {
     if (err) throw err;
     
     console.log(res.length + 'roles');
@@ -80,7 +80,7 @@ function viewAllRoles() {
 
 function viewAllDepartments() {
   var query = 'SELECT * FROM department';
-  connection.query(query, (err, res) => {
+  db.query(query, (err, res) => {
     if (err) throw err;
     
     console.log(res.length + 'department');
@@ -90,7 +90,9 @@ function viewAllDepartments() {
 }
 
 //create prompts too add employee
-addEmployee = () => {
+const addEmployee = async () => {
+
+
   inquirer.prompt([
     {
       type: 'input',
@@ -102,41 +104,59 @@ addEmployee = () => {
     type: 'input',
       name: 'last_name',
       message: 'What is employees last name?',
+    },
+    {
+      type: 'list',
+      name: 'rolesId',
+      message: 'What is the employees role?',
+      choices: [
+        'Sales Lead',
+        'Salesperson',
+        'Lead Engineer',
+        'Software Engineer',
+        'Account Manager',
+        'Legal Team Lead',
+        'Lawyer'
+
+      ],
+    },
+    {
+      type: 'list',
+      name: 'manager_id',
+      message: 'Who is the employees manager?',
+      choices: [1,3,5,7],
+    },
+    {
+      type: 'list',
+      name: 'roles_id',
+      message: 'What is their role id?',
+      choices: [2,4,6,8],
     }
-    .then(res => {
-      var first_name = res.first_name;
-      var last_name = res.last_name;
-
-      db.findAllRoles()
-      .then(([rows]) => {
-        var roles = rows;
-        const rolesChoices = roles.map(({ id, title }) => ({
-          name: title,
-          value: id
-        }));
-
-        promptUser({
-          type: 'list',
-          name: 'rolesId',
-          message: 'What is the employees role?',
-          choices: rolesChoices
-        })
-        .then(res => {
-          var rolesId = res.rolesId;
-
-          db.findAllEmployee()
-          .then(([rows]) => {
-            var employee = rows;
-            const managerChoices = employee.map (({ id, first_name, last_name }) => ({
-              name: `${first_name} ${last_name}`,
-              value: id
-            }))
-          })
-        })
-      })
-    })
-
   ])
+  .then((data) => {
+    db.query(
+      `INSERT INTO employee (first_name, last_name, roles_id, manager_id)
+      VALUES (?,?,?,?)`,
+      (params = [
+        data.first_name,
+        data.last_name,
+        data.roles_id,
+        data.manager_id,
+      ])
+    )
+
+  
+var query = 'SELECT * FROM employee';
+    db.query(query, (err, rows) => {
+      if (err) throw err;
+      console.log("Added Employee.");
+      console.table(rows);
+      promptUser();
+    })
+  })
 }
+   
+
+ 
 
 promptUser();
