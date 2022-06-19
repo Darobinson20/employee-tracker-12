@@ -205,10 +205,7 @@ var query = 'SELECT * FROM roles';
   })
 }
 
-// updateEmployeeRole = () => {
 
-//   const employeeSql = `SELECT * FROM`
-// }
    
 // var roles_id = empPrompt.roles;
 // var manager_id = empPrompt.manager;
