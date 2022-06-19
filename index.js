@@ -155,8 +155,72 @@ var query = 'SELECT * FROM employee';
     })
   })
 }
-   
+//create prompt to add a role
+function addRole(){
+  inquirer.prompt([
 
+    {
+      type: 'input',
+      name: 'title',
+      message: 'What is the new role?',
+    },
+    {
+      type: 'list',
+      name: 'department',
+      message: 'Which department are they in?',
+      choices:['Sales', 'Engineering','Finance','Legal'],
+    },
+    {
+      type: 'number',
+      name: 'salary',
+      message: "What is the salary?(no commas)"
+    },
+    {
+      type: 'list',
+      name: 'department_id',
+      message: 'What is the department id?',
+      choices: [1,2,3,4],
+    }
+  ])
+  .then((data) => {
+    db.query(
+      `INSERT INTO roles (title, department_id, salary)
+      VALUES (?,?,?)`,
+      (params = [
+        data.title,
+        data.department_id,
+        data.salary,
+      
+      ])
+    )
+
+  
+var query = 'SELECT * FROM roles';
+    db.query(query, (err, rows) => {
+      if (err) throw err;
+      console.log("Added Role.");
+      console.table(rows);
+      promptUser();
+    })
+  })
+}
+
+// updateEmployeeRole = () => {
+
+//   const employeeSql = `SELECT * FROM`
+// }
+   
+// var roles_id = empPrompt.roles;
+// var manager_id = empPrompt.manager;
+
+// const empSql = `INSERT INTO employee (first_name, last_name, roles_id, manager_id)
+// VALUES ("${empPrompt.first_name}", "${empPrompt.last_name}", ${roles_id}, ${manager_id});`;
+
+// db.query(empSql, (err, result) => {
+//   if (err) { console.log(err);}
+//   console.log("added new employee")
+//   promptUser();
+// })
  
 
 promptUser();
